@@ -24,12 +24,13 @@ function getScaleNotes(root, intervals) {
   return intervals.map(i => CHROMATIC[(rootIdx + i) % 12]);
 }
 
-export function suggestKeys(selectedNotes) {
+export function suggestKeys(selectedNotes, rootNote = null) {
   if (selectedNotes.length === 0) return [];
 
   const suggestions = [];
+  const roots = rootNote ? [rootNote] : CHROMATIC;
 
-  for (const root of CHROMATIC) {
+  for (const root of roots) {
     for (const scale of SCALES) {
       const scaleNotes = getScaleNotes(root, scale.intervals);
       const matchingNotes = selectedNotes.filter(n => scaleNotes.includes(n));

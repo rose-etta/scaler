@@ -6,6 +6,8 @@ import { suggestKeys } from './utils/musicTheory';
 import styles from './App.module.css';
 
 const MAX_NOTES = 7;
+const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const NOTE_DISPLAY = { 'C#': 'C♯', 'D#': 'D♯', 'F#': 'F♯', 'G#': 'G♯', 'A#': 'A♯' };
 
 const theme = createTheme({
   palette: {
@@ -23,6 +25,7 @@ const theme = createTheme({
 
 export default function App() {
   const [selectedNotes, setSelectedNotes] = useState(new Set());
+  const [selectedRoot, setSelectedRoot] = useState(null);
 
   const handleNoteClick = (note) => {
     setSelectedNotes(prev => {
@@ -36,10 +39,17 @@ export default function App() {
     });
   };
 
-  const handleClear = () => setSelectedNotes(new Set());
+  const handleRootClick = (note) => {
+    setSelectedRoot(prev => prev === note ? null : note);
+  };
+
+  const handleClear = () => {
+    setSelectedNotes(new Set());
+    setSelectedRoot(null);
+  };
 
   const selectedArray = useMemo(() => Array.from(selectedNotes), [selectedNotes]);
-  const suggestions   = useMemo(() => suggestKeys(selectedArray), [selectedArray]);
+  const suggestions   = useMemo(() => suggestKeys(selectedArray, selectedRoot), [selectedArray, selectedRoot]);
   const atLimit       = selectedNotes.size >= MAX_NOTES;
 
   return (
@@ -50,7 +60,7 @@ export default function App() {
 
           <div className={styles.header}>
             <h1 className={styles.title}>Scaler</h1>
-            <p className={styles.subtitle}>Select notes to narrow down what key a song might be in</p>
+            <p className={styles.subtitle}>Select notes to narrow down what key a song could be in</p>
           </div>
 
           <Piano selectedNotes={selectedNotes} onNoteClick={handleNoteClick} />
@@ -80,8 +90,26 @@ export default function App() {
             </div>
           </div>
 
+          <div className={styles.rootSelector}>
+            <span className={styles.rootLabel}>Starting note <span className={styles.rootOptional}>(optional)</span></span>
+            <div className={styles.rootNotes}>
+              {NOTES.map(note => (
+                <button
+                  key={note}
+                  className={styles.rootNote}
+                  data-active={selectedRoot === note}
+                  data-sharp={note.includes('#')}
+                  onClick={() => handleRootClick(note)}
+                  aria-pressed={selectedRoot === note}
+                >
+                  {NOTE_DISPLAY[note] ?? note}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className={styles.suggestions}>
-            <KeySuggestions suggestions={suggestions} selectedCount={selectedNotes.size} />
+            <KeySuggestions suggestions={suggestions} selectedCount={selectedNotes.size} selectedRoot={selectedRoot} />
           </div>
 
         </Container>

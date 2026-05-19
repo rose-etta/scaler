@@ -55,7 +55,7 @@ function SuggestionCard({ suggestion, rank }) {
   );
 }
 
-export default function KeySuggestions({ suggestions, selectedCount }) {
+export default function KeySuggestions({ suggestions, selectedCount, selectedRoot }) {
   if (selectedCount === 0) {
     return (
       <div className={styles.emptyState}>
@@ -79,9 +79,15 @@ export default function KeySuggestions({ suggestions, selectedCount }) {
         )}
       </div>
 
+      {selectedRoot && (
+        <p className={styles.rootHint}>
+          Showing only scales starting on <strong>{selectedRoot}</strong>
+        </p>
+      )}
+
       {topScore === 1 && (
         <p className={styles.perfectHint}>
-          All selected notes fit perfectly in the keys marked 100%
+          All selected notes fit perfectly in the {selectedRoot ? 'scale' : 'keys'} marked 100%
         </p>
       )}
 

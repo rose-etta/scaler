@@ -64,6 +64,59 @@
   align-self: center;
 }
 
+.rootSelector {
+  padding: 8px 20px 16px;
+}
+
+.rootLabel {
+  display: block;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+
+.rootOptional {
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.rootNotes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rootNote {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1.5px solid #d8b4fe;
+  background: #ffffff;
+  color: #6d28d9;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1.5;
+}
+
+.rootNote[data-sharp='true'] {
+  background: #f5f0ff;
+}
+
+.rootNote:hover {
+  background: #ede9fe;
+  border-color: #a78bfa;
+}
+
+.rootNote[data-active='true'] {
+  background: #7c3aed;
+  color: #ffffff;
+  border-color: #7c3aed;
+}
+
 .suggestions {
   margin-top: 24px;
 }
